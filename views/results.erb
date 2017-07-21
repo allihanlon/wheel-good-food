@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    
+    <meta charset="UTF-8">
+    	<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
+		<link rel="stylesheet" href="../css/main.css" />
+     <link rel="icon" type="image/gif" href="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Fork_%26_knife.svg/481px-Fork_%26_knife.svg.png" />
+    <title>Your results</title>
+
+  </head>
+  
+<body>
+  
+  <header id="header">
+				<h1>Wheel Good Food</h1>
+	</header>
+    	<section id="intro" class="main style1 dark fullscreen">
+				<div class="content">
+					<header>
+						<h2>Your Results!</h2>
+					</header>
+					<p>Welcome to your<strong> results,</strong> all curated especially for you. We hope you have fun on your next adventure, and eat some Wheel Good Food. Click on the names of the restaurants to learn more about the restaurants. <br></p>
+					<p>   </p>
+				
+					<footer>
+						
+					</footer>
+				</div>
+			</section>
+			
+    <center>
+        <%@finalresults.each do |entry| %>
+            <h2><a href="<%=entry['url'] %>"><%= entry['name'] %></a></h2> <br>
+            <img src="<%= entry['image_url'] %>" height= 30%, width= 30%> <br><br><br><br>
+        <% end %>
+    </center>
+    
+</body>
+    
+
+  <!--this is where we take the instance variable from application_controller and apply it inside the html with -->
+  <!-- ruby symbols and get the results of what's being passed through our model on this page-->
+<!--<h1>Here are some activites:</h1>-->
+
+  </body>
+    
+   
+	
+    <!--This is where we take the instance variable from the application_controller.rb and apply the ruby inside html with this syntax: -->
+    <!--Get the results of what is being passed through our model-->
+       
+   <!--This is where we take the instance variable (@variable) from application controller and apply it inside of html with ruby... this is like puts. Get results of what is being passed through our model on this page.-->
+
+</html>
