@@ -10,14 +10,13 @@ class MyApp < Sinatra::Base
   get '/' do
     erb :index
   end
-  
-  get '/results' do
+    get '/results' do
     erb :results
   end
   
   post '/results' do
     # #grab user input
-    user_term = params[:term]
+    user_term = "wheelchair accessible " + params[:term]
     user_location = params[:location]
     
     # #define instance variable that will be passed to our results page
