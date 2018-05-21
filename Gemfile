@@ -5,4 +5,4 @@ gem 'shotgun'
 gem 'pry'
 gem 'sinatra'
 gem "http"
-# gem 'yelp', require: 'yelp'
+gem 'yelp', require: 'yelp'

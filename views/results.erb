@@ -7,7 +7,7 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="../css/main.css" />
      <link rel="icon" type="image/gif" href="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Thumbs_up_font_awesome.svg/2000px-Thumbs_up_font_awesome.svg.png" />
-    <title>Your results</title>
+    <title>Your Results</title>
 
   </head>
   
@@ -21,7 +21,7 @@
 					<header>
 						<h2>Your Results!</h2>
 					</header>
-					<p>Welcome to your<strong> results,</strong> all curated especially for you. We hope you have fun on your next adventure, and have some Wheel Good Fun. Click on the names of the venues to learn more about them. <br></p>
+					<p>Welcome to your<strong> results,</strong> all curated especially for you. We hope you have some Wheel Good Fun on your next adventure. Click on the names of the venues to learn more about them. <br></p>
 					<p>   </p>
 				
 					<footer>
@@ -31,7 +31,7 @@
 			</section>
 			
     <center>
-        <%@finalresults.each do |entry| %>
+        <%@finalresults .each do |entry| %>
             <h2><a href="<%=entry['url'] %>"><%= entry['name'] %></a></h2> <br>
             <img src="<%= entry['image_url'] %>" height= 30%, width= 30%> <br><br><br><br>
         <% end %>

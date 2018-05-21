@@ -1,59 +1,25 @@
 require "json"
 require "http"
 require "optparse"
+require "yelp"
 
 
-# Place holders for Yelp Fusion's OAuth 2.0 credentials. Grab them
+# Place holders for Yelp Fusion's API key. Grab it
 # from https://www.yelp.com/developers/v3/manage_app
 CLIENT_ID = "O9RV9pfgEMS0_-he1IzNgw"
-CLIENT_SECRET = "WVVvh8B9dHiRN4cwHtMVeDepXhpgl1cCItUUF6LesxApK54j1e9worKzrG6g6goZ"
+API_KEY = "J_4iUDgBYj0xtxUN3jjqvgaAzbQqhKPtfegNFTDoClEHKWwUcY4ahUURrkQUZ8I_pSFVelWmdZKihwDqiDJSeSDjLo7yoDjlOR1M8mrej7U6UE_qGTSFaDxrlbhvWXYx"
 
 
 # Constants, do not change these
 API_HOST = "https://api.yelp.com"
 SEARCH_PATH = "/v3/businesses/search"
 BUSINESS_PATH = "/v3/businesses/"  # trailing / because we append the business id to the path
-TOKEN_PATH = "/oauth2/token"
-GRANT_TYPE = "client_credentials"
 
 
 DEFAULT_BUSINESS_ID = "yelp-san-francisco"
 DEFAULT_TERM = "wheelchair accessible"
 DEFAULT_LOCATION = "San Francisco, CA"
-SORT_BY = "rating"
-SEARCH_LIMIT = 20
-
-
-# Make a request to the Fusion API token endpoint to get the access token.
-# 
-# host - the API's host
-# path - the oauth2 token path
-#
-# Examples
-#
-#   bearer_token
-#   # => "Bearer some_fake_access_token"
-#
-# Returns your access token
-def bearer_token
-  # Put the url together
-  url = "#{API_HOST}#{TOKEN_PATH}"
-
-  raise "Please set your CLIENT_ID" if CLIENT_ID.nil?
-  raise "Please set your CLIENT_SECRET" if CLIENT_SECRET.nil?
-
-  # Build our params hash
-  params = {
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-    grant_type: GRANT_TYPE
-  }
-
-  response = HTTP.post(url, params: params)
-  parsed = response.parse
-
-  "#{parsed['token_type']} #{parsed['access_token']}"
-end
+SEARCH_LIMIT = 25
 
 
 # Make a request to the Fusion search endpoint. Full documentation is online at:
@@ -83,41 +49,43 @@ end
 #        }
 #
 # Returns a parsed json object of the request
+
 def search(term, location)
   url = "#{API_HOST}#{SEARCH_PATH}"
-  term.split(" ")
   params = {
     term: term,
     location: location,
-    sort_by: "rating",
     limit: SEARCH_LIMIT
   }
 
-  response = HTTP.auth(bearer_token).get(url, params: params)
+  response = HTTP.auth("Bearer #{API_KEY}").get(url, params: params)
+  response.parse
   puts response.parse["businesses"]
   response.parse["businesses"]
+
+  
 end
 
 
-# # Look up a business by a given business id. Full documentation is online at:
-# # https://www.yelp.com/developers/documentation/v3/business
-# # 
-# # business_id - a string business id
-# #
-# # Examples
-# # 
-# #   business("yelp-san-francisco")
-# #   # => {
-# #          "name": "Yelp",
-# #          "id": "yelp-san-francisco"
-# #          ...
-# #        }
-# #
-# # Returns a parsed json object of the request
+# Look up a business by a given business id. Full documentation is online at:
+# https://www.yelp.com/developers/documentation/v3/business
+# 
+# business_id - a string business id
+#
+# Examples
+# 
+#   business("yelp-san-francisco")
+#   # => {
+#          "name": "Yelp",
+#          "id": "yelp-san-francisco"
+#          ...
+#        }
+#
+# Returns a parsed json object of the request
 # def business(business_id)
 #   url = "#{API_HOST}#{BUSINESS_PATH}#{business_id}"
 
-#   response = HTTP.auth(bearer_token).get(url)
+#   response = HTTP.auth("Bearer #{API_KEY}").get(url)
 #   response.parse
 # end
 
@@ -161,7 +129,6 @@ end
 #   response["businesses"].each {|biz| puts biz["name"]}
 # when "lookup"
 #   business_id = options.fetch(:business_id, DEFAULT_BUSINESS_ID)
-
 
 #   raise "term is not a valid parameter for lookup" if options.key?(:term)
 #   raise "location is not a valid parameter for lookup" if options.key?(:lookup)
